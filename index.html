@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>M04 - GIS-01 External TEST Harness</title>
+
+  <script src="https://accounts.google.com/gsi/client"
+          async
+          defer></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f4f6f9;
+    }
+
+    .card {
+      max-width: 650px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+    }
+
+    .warning {
+      margin-top: 15px;
+      padding: 12px;
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+    }
+
+    .result {
+      margin-top: 20px;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 9px;
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+
+    button {
+      padding: 9px 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2>M04 – GIS-01 External TEST Harness</h2>
+
+  <p>
+    Kiểm thử xác minh Google ID Token thật phía Backend M04.
+  </p>
+
+  <div class="warning">
+    <strong>TEST ONLY</strong><br>
+    Không tạo Session, không ghi Sheet,
+    không tác động HINH_ANH.
+  </div>
+
+  <hr>
+
+  <label for="challenge">
+    <strong>TEST Challenge</strong>
+  </label>
+
+  <input
+    id="challenge"
+    type="text"
+    autocomplete="off"
+    placeholder="Dán TEST challenge vào đây">
+
+  <div id="g_id_onload"
+       data-client_id="675559669655-vn3i36pugk4pnbs7rm8a5o10dnm1m3ri.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse"
+       data-auto_prompt="false">
+  </div>
+
+  <div class="g_id_signin"
+       data-type="standard"
+       data-size="large"
+       data-theme="outline"
+       data-text="sign_in_with"
+       data-shape="rectangular">
+  </div>
+
+  <div class="result">
+    <p>
+      Sau khi Google xác thực, ID Token sẽ được POST trực tiếp
+      tới TEST endpoint M04.
+    </p>
+  </div>
+
+</div>
+
+<script>
+
+function handleCredentialResponse(response) {
+
+  var challenge =
+    document.getElementById("challenge").value.trim();
+
+  if (!challenge) {
+    alert("Chưa có TEST challenge.");
+    return;
+  }
+
+  if (!response || !response.credential) {
+    alert("Google không trả về ID Token.");
+    return;
+  }
+
+  /*
+   * Không console.log ID Token.
+   * Không hiển thị ID Token.
+   * Không lưu ID Token.
+   */
+
+  var form =
+    document.createElement("form");
+
+  form.method = "POST";
+
+  form.action =
+    "https://script.google.com/macros/s/AKfycbyiUELaPnfukl0yL9j9qVHR9Ywou-z4ou6SpUiB-MqHYLTP1DaGRxAh_g-gOMkRGmwv/exec";
+
+  form.target = "_blank";
+
+  var challengeInput =
+    document.createElement("input");
+
+  challengeInput.type = "hidden";
+  challengeInput.name = "challenge";
+  challengeInput.value = challenge;
+
+  var credentialInput =
+    document.createElement("input");
+
+  credentialInput.type = "hidden";
+  credentialInput.name = "credential";
+  credentialInput.value = response.credential;
+
+  form.appendChild(challengeInput);
+  form.appendChild(credentialInput);
+
+  document.body.appendChild(form);
+
+  form.submit();
+
+  /*
+   * Xóa form khỏi DOM ngay sau khi submit.
+   */
+  setTimeout(function() {
+    form.remove();
+  }, 1000);
+}
+
+</script>
+
+</body>
+</html>
