@@ -131,7 +131,12 @@ function handleCredentialResponse(response) {
     "https://script.google.com/macros/s/AKfycbyiUELaPnfukl0yL9j9qVHR9Ywou-z4ou6SpUiB-MqHYLTP1DaGRxAh_g-gOMkRGmwv/exec";
 
   form.target = "_self";
+var actionInput = document.createElement("input");
+actionInput.type = "hidden";
+actionInput.name = "action";
+actionInput.value = "GIS02_CREATE_SESSION";
 
+form.appendChild(actionInput);
   var challengeInput =
     document.createElement("input");
 
