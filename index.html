@@ -103,27 +103,12 @@
 
 function handleCredentialResponse(response) {
 
-  var challenge =
-    document.getElementById("challenge").value.trim();
-
-  if (!challenge) {
-    alert("Chưa có TEST challenge.");
-    return;
-  }
-
   if (!response || !response.credential) {
     alert("Google không trả về ID Token.");
     return;
   }
 
-  /*
-   * Không console.log ID Token.
-   * Không hiển thị ID Token.
-   * Không lưu ID Token.
-   */
-
-  var form =
-    document.createElement("form");
+  var form = document.createElement("form");
 
   form.method = "POST";
 
@@ -131,41 +116,30 @@ function handleCredentialResponse(response) {
     "https://script.google.com/macros/s/AKfycbyiUELaPnfukl0yL9j9qVHR9Ywou-z4ou6SpUiB-MqHYLTP1DaGRxAh_g-gOMkRGmwv/exec";
 
   form.target = "_self";
-var actionInput = document.createElement("input");
-actionInput.type = "hidden";
-actionInput.name = "action";
-actionInput.value = "GIS02_CREATE_SESSION";
 
-form.appendChild(actionInput);
-  var challengeInput =
-    document.createElement("input");
+  var actionInput = document.createElement("input");
+  actionInput.type = "hidden";
+  actionInput.name = "action";
+  actionInput.value = "GIS02_CREATE_SESSION";
 
-  challengeInput.type = "hidden";
-  challengeInput.name = "challenge";
-  challengeInput.value = challenge;
-
-  var credentialInput =
-    document.createElement("input");
-
+  var credentialInput = document.createElement("input");
   credentialInput.type = "hidden";
   credentialInput.name = "credential";
   credentialInput.value = response.credential;
 
-  form.appendChild(challengeInput);
+  form.appendChild(actionInput);
   form.appendChild(credentialInput);
 
   document.body.appendChild(form);
 
   form.submit();
 
-  /*
-   * Xóa form khỏi DOM ngay sau khi submit.
-   */
   setTimeout(function() {
     form.remove();
   }, 1000);
 }
 
+ 
 </script>
 
 </body>
